@@ -1,5 +1,5 @@
 from settings.imports import*
-from settings.esética import*
+from settings.estética import*
 
 folder = "C:/Users/faust/Documents/UBA/Actividades/Laboratorio/4/Datos/"
 
