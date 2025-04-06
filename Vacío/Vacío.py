@@ -64,7 +64,7 @@ for i in range(1, 6):  #pcteBM2 (no)
 
 for i in (1,2,4,5):
     plt.figure(figsize=(6, 4))
-    plt.title(f"BM{i+1}")
+    plt.title(f"BM{i}")
     plt.xlabel("Tiempo [s]")
     plt.ylabel("Presión [Torr]")
     plt.grid(color="gray", linestyle="-", linewidth=0.5)
@@ -72,7 +72,7 @@ for i in (1,2,4,5):
     # plt.legend()
 
 plt.figure(figsize=(8, 6))
-plt.title("fugas BM")
+# plt.title("fugas BM")
 plt.xlabel("Tiempo [s]")
 plt.ylabel("Presión [Torr]")
 plt.grid(color="gray", linestyle="-", linewidth=0.5)
@@ -84,7 +84,7 @@ plt.legend()
 
 
 plt.figure(figsize=(8, 6))
-plt.title("pcte BM")
+# plt.title("pcte BM")
 plt.xlabel("Tiempo [s]")
 plt.ylabel("Presión [Torr]")
 plt.grid(color="gray", linestyle="-", linewidth=0.5)
@@ -98,26 +98,127 @@ plt.show(block=True)
 #%% Transición y otros
 
 T = []
-for i in range(1, 3):
+for i in range(1, 4):
     T.append(pd.read_csv(folder+ "/Presión/" + f"T{i}.csv", index_col=["Tiempo"]))
-for i in range(1, 2):
+for i in range(1, 3):
     T.append(pd.read_csv(folder+ "/Presión/" + f"T{i}{i}.csv", index_col=["Tiempo"]))
 
 K = pd.read_csv(folder+ "/Presión/" + f"K.csv", index_col=["Tiempo"])
 F = pd.read_csv(folder+ "/Presión/" + f"F.csv", index_col=["Tiempo"])
 
-plt.figure(figsize=(8, 6))
-plt.title("Transición")
-plt.xlabel("Tiempo [s]")
+# plt.figure(figsize=(8, 6))
+# plt.title("F (pcte BM)")
+# plt.xlabel("Tiempo [s]")
+# plt.ylabel("Presión [Torr]")
+# plt.plot(F.index, F["Presión"],".", label="Mediciones F")
+# plt.grid(color="gray", linestyle="-", linewidth=0.5)
+# plt.legend()
+# plt.show(block=True)
 
+# plt.figure(figsize=(8, 6)) 
+# plt.title("K (apagado difusora)")
+# plt.plot(K.index, K["Presión"],".", label="Mediciones K")
+# plt.xlabel("Tiempo [s]")
+# plt.ylabel("Presión [Torr]")
+# plt.grid(color="gray", linestyle="-", linewidth=0.5)
+## plt.legend()
+# plt.show(block=True)
+
+for i in range(1, 4):
+    plt.figure(figsize=(5, 3))
+    plt.title(f"T{i}")
+    plt.plot(T[i-1].index, T[i-1]["Presión"],".", label="Mediciones T")
+    plt.xlabel("Tiempo [s]")
+    plt.ylabel("Presión [Torr]")
+    plt.grid(color="gray", linestyle="-", linewidth=0.5)
+    #plt.legend()
+for i in range(1,3):
+    plt.figure(figsize=(5, 3))
+    plt.title(f"T{i}{i}")
+    plt.plot(T[i+2].index, T[i+2]["Presión"],".", label="Mediciones T")
+    plt.xlabel("Tiempo [s]")
+    plt.ylabel("Presión [Torr]")
+    plt.grid(color="gray", linestyle="-", linewidth=0.5)
+    #plt.legend()
+
+plt.figure(figsize=(8, 6))
+plt.title("Mecanica T1 T11")
+plt.plot(T[0].index, T[0]["Presión"],".", label="Mediciones T1")
+plt.plot(T[3].index, T[3]["Presión"],".", label="Mediciones T11")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+plt.legend()
+
+plt.figure(figsize=(8, 6))
+plt.title("Difusora T3 T22")
+plt.plot(T[2].index, T[2]["Presión"],".", label="Mediciones T3")
+plt.plot(T[4].index, T[4]["Presión"],".", label="Mediciones T22")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+plt.legend()
+
+plt.show(block=True)
 #%% Mediciones
 # Bomba Difusora
 BD = []
-for i in range(1, 4):
+for i in range(1, 5):
     BD.append(pd.read_csv(folder+ "/Presión/" + f"BD{i}.csv", index_col=["Tiempo"]))
 fugaBD = []
-for i in range(1, 5):
+for i in range(1, 6):
     fugaBD.append(pd.read_csv(folder+ "/Presión/" + f"fugaBD{i}.csv", index_col=["Tiempo"]))
 pcteBD = []
-for i in range(1, 5):
-    pcteBD.append(pd.read_csv(folder+ "/Presión/" + f"pctnBD{i}.csv", index_col=["Tiempo"]))
+for i in range(1, 6):
+    pcteBD.append(pd.read_csv(folder+ "/Presión/" + f"pcteBD{i}.csv", index_col=["Tiempo"]))
+
+for i in (1,2,3,4):
+    plt.figure(figsize=(6, 4))
+    plt.title(f"BD{i}")
+    plt.xlabel("Tiempo [s]")
+    plt.ylabel("Presión [Torr]")
+    plt.grid(color="gray", linestyle="-", linewidth=0.5)
+    plt.plot(BD[i-1].index, BD[i-1]["Presión"],".k", label="Mediciones BD")
+    # plt.legend()
+
+plt.figure(figsize=(8, 6))
+# plt.title("fugas BD")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+plt.plot(fugaBD[0].index, fugaBD[0]["Presión"],".", label="fugaBD1")
+plt.plot(fugaBD[1].index, fugaBD[1]["Presión"],".", label="fugaBD2")
+plt.plot(fugaBD[2].index, fugaBD[2]["Presión"],".", label="fugaBD3")
+plt.plot(fugaBD[3].index, fugaBD[3]["Presión"],".", label="fugaBD4")
+plt.plot(fugaBD[4].index, fugaBD[4]["Presión"],".", label="fugaBD5")
+plt.legend()
+
+plt.figure(figsize=(8, 6))
+# plt.title("pcte BD")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+plt.plot(pcteBD[0].index, pcteBD[0]["Presión"],".", label="pcteBD1")
+plt.plot(pcteBD[1].index, pcteBD[1]["Presión"],".", label="pcteBD2")
+plt.plot(pcteBD[2].index, pcteBD[2]["Presión"],".", label="pcteBD3")
+# plt.plot(pcteBD[3].index, pcteBD[3]["Presión"],".", label="pcteBD4")
+plt.plot(pcteBD[4].index, pcteBD[4]["Presión"],".", label="pcteBD5")
+plt.legend()
+
+plt.figure(figsize=(8, 6))
+plt.title("pcte BD 4")
+plt.plot(pcteBD[3].index, pcteBD[3]["Presión"],".", label="pcteBD4")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+plt.legend()
+
+# plt.figure(figsize=(8, 6))
+# plt.title("fuga BD 4")
+# plt.xlabel("Tiempo [s]")
+# plt.ylabel("Presión [Torr]")
+# plt.grid(color="gray", linestyle="-", linewidth=0.5)
+# plt.plot(fugaBD[3].index, fugaBD[3]["Presión"],".", label="fugaBD4")
+
+plt.show(block=True)
+# %%
