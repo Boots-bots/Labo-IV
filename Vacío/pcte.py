@@ -17,6 +17,24 @@ pcteBD = []
 for i in range(1, 6):
     pcteBD.append(pd.read_csv(folder+ "/Presión/" + f"pcteBD{i}.csv", index_col=["Tiempo"]))
 
+def fuga(t,C,V,p0,pe):
+    "C conductancia de predidas"
+    "V volumen de la cámara"
+    "p0 presión inicial"
+    "pe presión externa"
+    return pe + (p0 - pe) * np.exp(t*C / V)
+
+def desgase(t,Q,V,p0):
+    "Q caudal de gas entrante debido a desgase"
+    "V volumen de la cámara"
+    "p0 presión inicial"
+    return p0 + Q * t / V
+
+def perdidas(t,C,Q,V,p0,pe,F,D):
+    return F*fuga(t,C,V,p0,pe) + D*desgase(t,Q,V,p0) 
+
+exit()
+
 plt.figure(figsize=(8, 6))
 # plt.title("pcte BM")
 plt.xlabel("Tiempo [s]")

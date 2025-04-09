@@ -12,6 +12,14 @@ BD = []
 for i in range(1, 5):
     BD.append(pd.read_csv(folder+ "/Presión/" + f"BD{i}.csv", index_col=["Tiempo"]))
 
+def bombeo(t,S,V,p0,pf):
+    "S velocidad de bombeo"
+    "V volumen de la cámara"
+    "p0, pf presión inicial, final"
+    return (p0 + pf) * np.exp(t * S / V) + pf
+
+exit()
+
 for i in (1,2,3,4):
     plt.figure(figsize=(6, 4))
     plt.title(f"BD{i}")

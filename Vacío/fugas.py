@@ -15,6 +15,26 @@ fugaBD = []
 for i in range(1, 6):
     fugaBD.append(pd.read_csv(folder+ "/Presión/" + f"fugaBD{i}.csv", index_col=["Tiempo"]))
 
+def fuga(t,C,V,p0,pe):
+    "C conductancia de predidas"
+    "V volumen de la cámara"
+    "p0 presión inicial"
+    "pe presión externa"
+    return pe + (p0 - pe) * np.exp(t*C / V)
+
+error1 = 1e-6*np.ones(len(fugaBM[0]["Presión"].values))
+pop, cov = curve_fit(fuga, fugaBM[0].index, fugaBM[0]["Presión"], sigma = error1 , p0=[1, 0.01, fugaBM[0]["Presión"][0], 750], absolute_sigma=True) #, bounds=(0, [1e-2, 1e-2, 1e-2])
+
+plt.figure(figsize=(8, 6))
+plt.title("fuga BM 1")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+plt.plot(fugaBM[0].index, fugaBM[0]["Presión"],".", label="Mediciones fugaBM1")
+
+
+exit()
+
 plt.figure(figsize=(8, 6))
 # plt.title("fugas BM")
 plt.xlabel("Tiempo [s]")
