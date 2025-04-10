@@ -16,23 +16,24 @@ fugaBD = []
 for i in range(1, 6):
     fugaBD.append(pd.read_csv(folder+ "/Presión/" + f"fugaBD{i}.csv", index_col=["Tiempo"]))
 
-def fuga(t,CV,p0):
+def fuga(t,C,V,p0):
     "C conductancia de predidas"
     "V volumen de la cámara"
     "p0 presión inicial"
     "pe presión externa"
-    return 750 + (p0 - 750) * np.exp(-t*CV)  #CV = C/V PE = 750
+    return 750 + (p0 - 750) * np.exp(-t*C/V)  #CV = C/V PE = 750
  
 def error(df):
     p = np.array(df["Presión"].values)
     std = []
     for y in p:                  # error sensor 
+        # std.append(0.05*y)
         if y > 7.5e-4:
-            std.append(15*y/100)
+            std.append(0.15*y)
         elif y > 75:
-            std.append(5*y/100)
+            std.append(0.05*y)
         else:
-            std.append(30*y/100)
+            std.append(0.30*y)
 
     for i in range(len(std)-1):  # error temporal
         a = (p[i+1] - p[i])/np.sqrt(12)
@@ -44,17 +45,21 @@ def error(df):
 Parametros, Errores = [], []
 Chis, Pvals = [], []
 for i in range(len(fugaBM)):
-    pop, cov = curve_fit(fuga, fugaBM[i].index.values, fugaBM[i]["Presión"].values, sigma = error(fugaBM[i]) , p0=[1e-2/0.01, fugaBM[i]["Presión"][0]], absolute_sigma=True)
+    pop, cov = curve_fit(fuga, fugaBM[i].index.values, fugaBM[i]["Presión"].values, sigma = error(fugaBM[i]) , p0=[1e-2,0.01, fugaBM[i]["Presión"][0]], absolute_sigma=True)
     Parametros.append(pop)
     Errores.append(np.sqrt(np.diag(cov)))
     chi, pv, nu = chi2_pvalor(fugaBM[i].index.values, fugaBM[i]["Presión"].values, error(fugaBM[i]), fuga(fugaBM[i].index.values, *pop), 2)
     Chis.append(chi/nu)
     Pvals.append(pv)
+    residuos(fuga, pop, fugaBM[i].index.values, fugaBM[i]["Presión"].values, error(fugaBM[i]), grafico = True)
 
-print(Chis)
+for i in range(len(fugaBD)):
+    print("fuga BM", i+1)
+    print("pvalor: ", Pvals[i], "Chi: ", Chis[i])
+    print("C: ", Parametros[i][0], "±", Errores[i][0],"V: ", Parametros[i][1], "±", Errores[i][1] ,"p0: ", Parametros[i][2], "±", Errores[i][2])
 
+plt.show(block=True)
 
-exit()
 
 color = ("b","orange","g","k","r")
 
