@@ -22,7 +22,7 @@ def fuga(t,C,V,p0,pe):
     "V volumen de la cámara"
     "p0 presión inicial"
     "pe presión externa"
-    return pe + (p0 - pe) * np.exp(t*C / V)
+    return pe + (p0 - pe) * np.exp(-t*C / V)
 
 def desgase(t,Q,V,p0):
     "Q caudal de gas entrante debido a desgase"

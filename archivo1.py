@@ -4,8 +4,6 @@
 # git submodule update --init --recursive
 # git submodule update --remote --merge
 
-from settings.imports import*
-a = []
-for i in range(1,6):
-    a.append(1)
-print(a)
+import numpy as np
+import matplotlib.pyplot as plt
+

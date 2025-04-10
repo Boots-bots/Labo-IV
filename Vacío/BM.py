@@ -18,7 +18,7 @@ def bombeo(t,S,V,p0,pf):
     "S velocidad de bombeo"
     "V volumen de la cámara"
     "p0, pf presión inicial, final"
-    return (p0 + pf) * np.exp(t * S / V) + pf
+    return (p0 + pf) * np.exp(-t * S / V) + pf
 
 
 exit()

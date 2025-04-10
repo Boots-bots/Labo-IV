@@ -2,8 +2,9 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from settings.imports import*
+# from settings.imports import*
 from settings.estética import*
+from settings.ajustes import*
 
 folder = "C:/Users/faust/Documents/UBA/Actividades/Laboratorio/4/Datos/"
 
@@ -15,25 +16,66 @@ fugaBD = []
 for i in range(1, 6):
     fugaBD.append(pd.read_csv(folder+ "/Presión/" + f"fugaBD{i}.csv", index_col=["Tiempo"]))
 
-def fuga(t,C,V,p0,pe):
+def fuga(t,CV,p0):
     "C conductancia de predidas"
     "V volumen de la cámara"
     "p0 presión inicial"
     "pe presión externa"
-    return pe + (p0 - pe) * np.exp(t*C / V)
+    return 750 + (p0 - 750) * np.exp(-t*CV)  #CV = C/V PE = 750
+ 
+def error(df):
+    p = np.array(df["Presión"].values)
+    std = []
+    for y in p:                  # error sensor 
+        if y > 7.5e-4:
+            std.append(15*y/100)
+        elif y > 75:
+            std.append(5*y/100)
+        else:
+            std.append(30*y/100)
 
-error1 = 1e-6*np.ones(len(fugaBM[0]["Presión"].values))
-pop, cov = curve_fit(fuga, fugaBM[0].index, fugaBM[0]["Presión"], sigma = error1 , p0=[1, 0.01, fugaBM[0]["Presión"][0], 750], absolute_sigma=True) #, bounds=(0, [1e-2, 1e-2, 1e-2])
+    for i in range(len(std)-1):  # error temporal
+        a = (p[i+1] - p[i])/np.sqrt(12)
+        # if a > std[i]:
+        std[i] = std[i] + a
 
-plt.figure(figsize=(8, 6))
-plt.title("fuga BM 1")
-plt.xlabel("Tiempo [s]")
-plt.ylabel("Presión [Torr]")
-plt.grid(color="gray", linestyle="-", linewidth=0.5)
-plt.plot(fugaBM[0].index, fugaBM[0]["Presión"],".", label="Mediciones fugaBM1")
+    return np.array(std)
+
+Parametros, Errores = [], []
+Chis, Pvals = [], []
+for i in range(len(fugaBM)):
+    pop, cov = curve_fit(fuga, fugaBM[i].index.values, fugaBM[i]["Presión"].values, sigma = error(fugaBM[i]) , p0=[1e-2/0.01, fugaBM[i]["Presión"][0]], absolute_sigma=True)
+    Parametros.append(pop)
+    Errores.append(np.sqrt(np.diag(cov)))
+    chi, pv, nu = chi2_pvalor(fugaBM[i].index.values, fugaBM[i]["Presión"].values, error(fugaBM[i]), fuga(fugaBM[i].index.values, *pop), 2)
+    Chis.append(chi/nu)
+    Pvals.append(pv)
+
+print(Chis)
 
 
 exit()
+
+color = ("b","orange","g","k","r")
+
+plt.figure(figsize=(8, 6))
+# plt.title("fuga BM 1")
+plt.xlabel("Tiempo [s]")
+plt.ylabel("Presión [Torr]")
+plt.grid(color="gray", linestyle="-", linewidth=0.5)
+for i in (0,1,2,4):
+    ejex = np.linspace(np.min(fugaBM[i].index), np.max(fugaBM[i].index), 10000)
+    plt.fill_between(fugaBM[i].index, fugaBM[i]["Presión"] - error(fugaBM[i]), fugaBM[i]["Presión"] + error(fugaBM[i]), alpha=0.3)
+    plt.plot(fugaBM[i].index, fugaBM[i]["Presión"], ".", color = color[i], label=f"Mediciones fugaBM{i+1}")
+    plt.plot(ejex, fuga(ejex, *Parametros[i]), color = color[i])
+# plt.ylim(np.min(fugaBM[i]["Presión"])*0.8, np.max(fugaBM[i]["Presión"])*1.2)
+plt.legend()
+
+
+
+plt.show(block=True)
+exit()
+#datos
 
 plt.figure(figsize=(8, 6))
 # plt.title("fugas BM")
