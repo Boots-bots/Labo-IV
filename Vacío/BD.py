@@ -18,7 +18,7 @@ def bombeo(t,S,V,p0,pf):
     "p0, pf presión inicial, final"
     return (p0 + pf) * np.exp(-t * S / V) + pf
 
-exit()
+# exit()
 
 for i in (1,2,3,4):
     plt.figure(figsize=(6, 4))
