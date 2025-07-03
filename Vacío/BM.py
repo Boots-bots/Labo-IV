@@ -21,7 +21,7 @@ def bombeo(t,S,V,p0,pf):
     return (p0 + pf) * np.exp(-t * S / V) + pf
 
 
-exit()
+# exit()
 
 for i in (1,2,4,5):
     plt.figure(figsize=(6, 4))
@@ -32,7 +32,7 @@ for i in (1,2,4,5):
     plt.plot(BM[i-1].index, BM[i-1]["Presión"],".k", label="Mediciones BM")
     # plt.legend()
 
-exit()
+# exit()
 plt. figure(figsize=(8, 6))
 plt.title("BM")
 plt.xlabel("Tiempo [s]")

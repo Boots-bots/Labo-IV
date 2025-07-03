@@ -32,22 +32,22 @@ T[1] = T[1].iloc[:-1, :]
 
 BD2 = pd.read_csv(folder+ "/Presión/" + f"BD2.csv", index_col=["Tiempo"])
 
-# for i in range(1, 4):
-#     plt.figure(figsize=(5, 3))
-#     plt.title(f"T{i}")
-#     plt.plot(T[i-1].index, T[i-1]["Presión"],".", label="Mediciones T")
-#     plt.xlabel("Tiempo [s]")
-#     plt.ylabel("Presión [Torr]")
-#     plt.grid(color="gray", linestyle="-", linewidth=0.5)
-#     #plt.legend()
-# for i in range(1,3):
-#     plt.figure(figsize=(5, 3))
-#     plt.title(f"T{i}{i}")
-#     plt.plot(T[i+2].index, T[i+2]["Presión"],".", label="Mediciones T")
-#     plt.xlabel("Tiempo [s]")
-#     plt.ylabel("Presión [Torr]")
-#     plt.grid(color="gray", linestyle="-", linewidth=0.5)
-#     #plt.legend()
+for i in range(1, 4):
+    plt.figure(figsize=(5, 3))
+    # plt.title(f"T{i}")
+    plt.plot(T[i-1].index, T[i-1]["Presión"],".", label="Mediciones T")
+    plt.xlabel("Tiempo [s]")
+    plt.ylabel("Presión [Torr]")
+    plt.grid(color="gray", linestyle="-", linewidth=0.5)
+    #plt.legend()
+for i in range(1,3):
+    plt.figure(figsize=(5, 3))
+    plt.title(f"T{i}{i}")
+    plt.plot(T[i+2].index, T[i+2]["Presión"],".", label="Mediciones T")
+    plt.xlabel("Tiempo [s]")
+    plt.ylabel("Presión [Torr]")
+    plt.grid(color="gray", linestyle="-", linewidth=0.5)
+    #plt.legend()
 
 # plt.figure(figsize=(8, 6))
 # plt.title("BD2")
@@ -57,6 +57,8 @@ BD2 = pd.read_csv(folder+ "/Presión/" + f"BD2.csv", index_col=["Tiempo"])
 # plt.grid(color="gray", linestyle="-", linewidth=0.5)
 # # plt.legend()
 
+plt.show(block=True)
+exit()
 # MATCH
 
 plt.figure(figsize=(8, 6))

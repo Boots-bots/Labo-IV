@@ -60,6 +60,14 @@ for i in range(len(fugaBM)):
     print("pvalor: ", Pvals[i], "Chi: ", Chis[i])
     print("C/V: ", Parametros[i][0], "±", Errores[i][0],"p0: ", Parametros[i][1], "±", Errores[i][1])
 
+Vol = 4.52 #[L] *1000 m^3
+for i in range(len(fugaBM)):
+    print("fuga BM", i+1)
+    C = Parametros[i][0] * Vol / 1000
+    print("C: ", C) # [m^3/s]
+    print("Cstd: ", Errores[i][0] * Vol / 1000) # [m^3/s]
+print(Vol/1000)
+
 color = ("b","orange","g","k","r")
 
 ejex = np.linspace(0, 1e7, 10000)
@@ -72,7 +80,7 @@ plt.grid(color="gray", linestyle="-", linewidth=0.5)
 for i in (0,1,2,4):
     ejex = np.linspace(np.min(fugaBM[i].index), np.max(fugaBM[i].index), 10000)
     plt.fill_between(fugaBM[i].index, fugaBM[i]["Presión"] - error(fugaBM[i]), fugaBM[i]["Presión"] + error(fugaBM[i]), alpha=0.3)
-    plt.plot(fugaBM[i].index, fugaBM[i]["Presión"], ".", color = color[i], label=f"Mediciones fugaBM{i+1}")
+    plt.plot(fugaBM[i].index, fugaBM[i]["Presión"], ".", color = color[i], label=f"Medición fugaBM{i+1}")
     plt.plot(ejex, fuga(ejex, *Parametros[i]), color = color[i])
 # plt.ylim(np.min(fugaBM[i]["Presión"])*0.8, np.max(fugaBM[i]["Presión"])*1.2)
 plt.legend()
@@ -96,7 +104,7 @@ plt.legend()
 ejex = np.linspace(np.min(fugaBM[3].index), np.max(fugaBM[3].index), 10000)
 plt.figure(figsize=(8, 6))
 plt.title("fuga BM4")
-plt.plot(fugaBM[3].index, fugaBM[3]["Presión"],".b", label="Mediciones fugaBM4")
+plt.plot(fugaBM[3].index, fugaBM[3]["Presión"],".b", label="Medicion fugaBM4")
 plt.fill_between(fugaBM[3].index, fugaBM[3]["Presión"] - error(fugaBM[3]), fugaBM[3]["Presión"] + error(fugaBM[3]), alpha=0.3)
 plt.plot(ejex, fuga(ejex, *Parametros[3]), "b", label="Ajuste fugaBM4")
 plt.xlabel("Tiempo [s]")

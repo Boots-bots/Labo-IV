@@ -26,17 +26,18 @@ for i in (1,2,3,4):
     plt.xlabel("Tiempo [s]")
     plt.ylabel("Presión [Torr]")
     plt.grid(color="gray", linestyle="-", linewidth=0.5)
-    plt.plot(BD[i-1].index, BD[i-1]["Presión"],".k", label="Mediciones BD")
-    # plt.legend()
+    # plt.axhline(y = 2.7e-5, color = "k", linestyle = "--", label = "saturación", alpha=0.5)
+    plt.plot(BD[i-1].index, BD[i-1]["Presión"],".k", label="Medicion BD")
+    plt.legend()
 
 plt. figure(figsize=(8, 6))
-plt.title("BD")
+# plt.title("BD")
 plt.xlabel("Tiempo [s]")
 plt.ylabel("Presión [Torr]")
 plt.grid(color="gray", linestyle="-", linewidth=0.5)
-plt.plot(BD[0].index, BD[0]["Presión"],".", label="Mediciones BD1")
-plt.plot(BD[2].index, BD[2]["Presión"],".", label="Mediciones BD3") # corrección de tiempo +18
-plt.plot(BD[3].index+1.2, BD[3]["Presión"],".", label="Mediciones BD4") # corrección de tiempo +1.2
+plt.plot(BD[0].index, BD[0]["Presión"],".", label="Medición BD1")
+plt.plot(BD[2].index, BD[2]["Presión"],".", label="Medición BD3") # corrección de tiempo +18
+plt.plot(BD[3].index+1.2, BD[3]["Presión"],".", label="Medición BD4") # corrección de tiempo +1.2
 plt.legend()
 
 plt.show(block=True)
